@@ -82,5 +82,5 @@ export const tokenize = (input) => {
 };
 
 // Uncomment to Test
-const code = " let x = 5 + 10 #comment after code";
-console.log(tokenize(code));
+// const code = " let x = 5 + 10 #comment after code";
+// console.log(tokenize(code));
