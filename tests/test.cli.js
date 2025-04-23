@@ -12,7 +12,7 @@ async function runTests() {
         break;
       case "parser":
         console.log(chalk.blueBright("Running parser tests..."));
-        // await import("./parser.test.js");
+        await import("./parser.test.js");
         break;
       default:
         console.log(chalk.yellow("Usage: node cli.js <lexer|parser>"));
