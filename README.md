@@ -30,13 +30,33 @@ To create a basic interpreted programming language from scratch with clean struc
 
 ---
 
+## How to Run code
+
+```dlang
+create a .dlang file with exmaple code :
+
+let x = 5
+let y = 10
+let name = "Dhiraj"
+print x + y
+print name
+
+Run the code :
+node src/index.js example.dlang
+
+```
+
 ## 📜 Sample dlang Code
 
 ```dlang
-# This is a comment
 let x = 10
 let y = 5
 print x + y
+# This is a comment
+
+
+
+
 🛠️ Technologies
 Node.js
 
