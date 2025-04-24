@@ -14,8 +14,14 @@ async function runTests() {
         console.log(chalk.blueBright("Running parser tests..."));
         await import("./parser.test.js");
         break;
+      case "evaluator":
+        console.log(chalk.blueBright("Running parser tests..."));
+        await import("./evaluator.test.js");
+        break;
       default:
-        console.log(chalk.yellow("Usage: node cli.js <lexer|parser>"));
+        console.log(
+          chalk.yellow("Usage: node cli.js <lexer|parser|evaluator>")
+        );
         process.exit(1);
     }
 
