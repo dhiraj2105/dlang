@@ -1,0 +1,25 @@
+{
+    "editor.fontFamily": "JetBrains Mono",
+
+    "editor.tokenColorCustomizations": {
+        "textMateRules": [
+            {
+                "scope": [
+                    "comment",
+                    "comment.block",
+                    "comment.line",
+                    "comment.block.documentation",
+                ],
+                "settings": {
+                    "fontStyle": "italic",
+                    "foreground":"#77926d"
+                }
+            }
+        ]
+    },
+    
+    "workbench.colorCustomizations": {
+        "editor.background": "#1d1d2a"
+    }
+
+}
