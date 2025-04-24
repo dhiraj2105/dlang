@@ -1,86 +1,90 @@
 // ==========================
 // lexer.js
-// This file convert source code into a list of tokens
-// Each token is a meaningful unit: keywords, variables, number, operators, etc
-
+// This file converts source code into a list of tokens
+// Each token is a meaningful unit: keywords, variables, numbers, operators, etc.
+//
 // Example:
 // Input : let x = 5 + 10
 // Output: [ { type: 'KEYWORD', value: 'let' }, { type: 'IDENTIFIER', value: 'x' }, ... ]
-
-// Each part of code is matched using regex
+//
+// Each part of the code is matched using regex
 // ==========================
 
 // List of reserved keywords in dlang
 const KEYWORDS = ["let", "print", "if", "else", "while"];
 
-// Definie token types using regex
+// Define token types using regular expressions
 const TOKEN_TYPES = [
-  { type: "WHITESPACE", regex: /^\s+/ }, // spaces and tabs
-  { type: "COMMENT", regex: /^#.*$/ }, // comments
-  { type: "NUMBER", regex: /^\d+/ }, // integers
-  { type: "STRING", regex: /^"([^"]*)"/ }, // string literals
-  { type: "OPERATOR", regex: /^[+\-*/=<>!]+/ }, // operators like +, -, *, =, etc.
-  { type: "PUNCTUATION", regex: /^[\(\)\{\};,]/ }, // punctuation
-  { type: "IDENTIFIER", regex: /^[a-zA-Z_][a-zA-Z0-9_]*/ }, // variables & keywords
+  { type: "WHITESPACE", regex: /^\s+/ }, // Matches spaces and tabs
+  { type: "NUMBER", regex: /^\d+/ }, // Matches integers
+  { type: "STRING", regex: /^"([^"]*)"/ }, // Matches string literals
+  { type: "OPERATOR", regex: /^[+\-*/=<>!]+/ }, // Matches operators like +, -, *, =, etc.
+  { type: "PUNCTUATION", regex: /^[\(\)\{\};,]/ }, // Matches punctuation marks
+  { type: "IDENTIFIER", regex: /^[a-zA-Z_][a-zA-Z0-9_]*/ }, // Matches variable names and keywords
 ];
 
-// -----------------------
-// Main Tokenizer function
-// -----------------------
-
 /**
- * Tokenizes a single line or block of code
+ * Tokenizes the source code into an array of token objects
+ * Each token has a type and a value
+ *
  * @param {string} input - The source code to tokenize
- * * @returns {Array} - An array of tokens extracted from the input source code
+ * @returns {Array} - An array of tokens
  */
-
 export const tokenize = (input) => {
-  const tokens = []; // Initialie an array to store tokens
-  let code = input; // Copy input code to a mutuable variable
+  const tokens = []; // Array to store extracted tokens
+  const lines = input.split("\n"); // Split the entire code into lines
 
-  // loop through code untial all characters are processed
-  while (code.length > 0) {
-    let matched = false; // falg to check if any token matched
-
-    // try matching each token type in order
-    for (const { type, regex } of TOKEN_TYPES) {
-      const match = regex.exec(code); // attempt to match the regex
-
-      if (match) {
-        matched = true; // set matched flag to true
-        const value = match[0]; // get the matched value
-
-        // skip whitespaces and comments from final output
-        if (type !== "WHITESPACE" && type !== "COMMENT") {
-          let tokenType = type; // default token type
-
-          // if identifier is a keyword, change type to KEYWORD
-          // if  any token is a predefined keyword then change the type of token to KEYWORD so that user can not set variable as keyword
-          if (type === "IDENTIFIER" && KEYWORDS.includes(value)) {
-            tokenType = "KEYWORD";
-          }
-
-          // push the token to tokens array
-          tokens.push({ type: tokenType, value });
-        }
-
-        // remove mtached part from code
-        code = code.slice(value.length);
-        break;
-      }
+  // Process each line individually
+  for (let line of lines) {
+    // Remove inline comments (everything after #)
+    if (line.includes("#")) {
+      line = line.split("#")[0];
     }
 
-    // if no matched found , throw error
-    if (!matched) {
-      console.error(`Failed to tokenize: ${code}`);
-      throw new Error(`Unexpected token near : ` + code.slice(0, 10));
+    // Trim whitespace and skip if line is empty after removing comment
+    line = line.trim();
+    if (line === "") continue;
+
+    let code = line; // Copy line into mutable variable
+
+    // Loop through characters in the line until fully processed
+    while (code.length > 0) {
+      let matched = false; // Flag to track if any token matched
+
+      // Try matching each token type in order
+      for (const { type, regex } of TOKEN_TYPES) {
+        const match = regex.exec(code); // Try to match the regex
+
+        if (match) {
+          matched = true; // Set matched flag to true
+          const value = match[0]; // Get matched string
+
+          // Skip whitespace
+          if (type !== "WHITESPACE") {
+            let tokenType = type;
+
+            // Change type to KEYWORD if the identifier matches a reserved word
+            if (type === "IDENTIFIER" && KEYWORDS.includes(value)) {
+              tokenType = "KEYWORD";
+            }
+
+            // Push the valid token into the token array
+            tokens.push({ type: tokenType, value });
+          }
+
+          // Remove the matched part from the code string
+          code = code.slice(value.length);
+          break; // Break inner loop and try next part
+        }
+      }
+
+      // If no token matched, throw an error
+      if (!matched) {
+        console.error(`Failed to tokenize: ${code}`);
+        throw new Error(`Unexpected token near: ${code.slice(0, 10)}`);
+      }
     }
   }
 
-  // return array of tokens
-  return tokens;
+  return tokens; // Return the array of tokens
 };
-
-// Uncomment to Test
-// const code = " let x = 5 + 10 #comment after code";
-// console.log(tokenize(code));
