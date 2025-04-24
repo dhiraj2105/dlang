@@ -1,0 +1,11 @@
+print "Hello from dlang"
+
+let num = 10 
+
+print num
+
+let x = 10
+let y = 5
+print x + y
+
+# comment is working but in last not in middle or in start
