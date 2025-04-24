@@ -4,7 +4,9 @@ let num = 10
 
 print num
 
-let x = 10
+# comment
+
+let x = 10 # also a commented
 let y = 5
 print x + y
 
