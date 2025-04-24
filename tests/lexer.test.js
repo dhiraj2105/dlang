@@ -12,6 +12,10 @@ const testCases = [
     ],
   },
   {
+    input: "#commented line",
+    expected: [],
+  },
+  {
     input: 'print "Hello, world!"',
     expected: [
       { type: "KEYWORD", value: "print" },
