@@ -5,11 +5,17 @@
   "scripts": {
     "start": "node index.js"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "dlang",
+    "dhiraj",
+    "dhiraj kumar",
+    "dhiraj language",
+    "toy programming language"
+  ],
+  "author": "Dhiraj Kumar",
   "license": "ISC",
   "type": "module",
-  "description": "",
+  "description": "A basic programming language built for learning and experimenting",
   "dependencies": {
     "chalk": "^5.4.1",
     "readline-sync": "^1.4.10"
