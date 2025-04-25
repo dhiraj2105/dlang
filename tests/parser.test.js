@@ -58,7 +58,7 @@ const testCases = [
     ],
   },
   {
-    input: 'if (x < 5) { print "small"; } else { print "big"; }',
+    input: 'if x < 5 { print "small"} else { print "big" }',
     expected: [
       {
         type: "IfStatement",
