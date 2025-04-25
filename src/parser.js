@@ -80,6 +80,11 @@ function parseStatement() {
     return parsePrintStatement(); // Parse a print statement (e.g., print "Hello")
   }
 
+  // check if the token is a "if" keyword for if-else blocks
+  if (match("KEYWORD", "if")) {
+    return parseIfStatement();
+  }
+
   // If the token doesn't match "let" or "print", throw an error
   throw new Error("Unknown statement: " + token.value);
 }
@@ -179,6 +184,63 @@ function parsePrimary() {
 
   // If the token doesn't match any of the expected types (number, string, identifier), throw an error
   throw new Error("Unexpected token in expression: " + token.value);
+}
+
+// ------------------------------
+// 📦 Parses a block of code inside { ... }
+// Returns an array of statements
+// ------------------------------
+function parseBlock() {
+  if (!match("PUNCTUATION", "{")) {
+    throw new Error("Expected '{' to start block");
+  }
+  next(); // Skip the opening '{'
+
+  const body = [];
+
+  while (!match("PUNCTUATION", "}")) {
+    if (current >= tokens.length) {
+      throw new Error("Unterminated block: missing '}'");
+    }
+    const stmt = parseStatement(); // Parse each statement inside the block
+    if (stmt) body.push(stmt);
+  }
+
+  next(); // Skip the closing '}'
+
+  return { type: "BlockStatement", body };
+}
+
+// ------------------------------
+// 🔀 Parses if/else statement
+// Example:
+// if x > 5 {
+//   print "big"
+// } else {
+//   print "small"
+// }
+// ------------------------------
+function parseIfStatement() {
+  next(); // Skip the 'if' keyword
+
+  const condition = parseExpression(); // Parse the condition (e.g., x > 5)
+
+  const thenBranch = parseBlock(); // Parse the block that follows if condition is true
+
+  let elseBranch = null;
+
+  // Check if there's an 'else' keyword after the 'if' block
+  if (match("KEYWORD", "else")) {
+    next(); // Skip the 'else' keyword
+    elseBranch = parseBlock(); // Parse the else block
+  }
+
+  return {
+    type: "IfStatement",
+    condition,
+    thenBranch,
+    elseBranch,
+  };
 }
 
 // ------------------------------
