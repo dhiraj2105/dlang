@@ -1,0 +1,21 @@
+print "If else block 1"
+
+let x = 9
+
+if x > 5{
+    print "big"
+}else{
+    print "small"
+}
+
+print "If else block 2"
+
+let age = 19
+
+if age < 18{
+    print "No voting"
+} if age > 18{
+    print "Yes voting"
+} else {
+    print "Age not valid"
+}
