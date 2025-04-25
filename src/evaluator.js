@@ -39,10 +39,14 @@ function evaluateNode(node) {
       return handlePrintStatement(node);
     case "IfStatement":
       return handleIfStatement(node);
+    case "WhileStatement":
+      return handleWhileStatement(node);
     case "BlockStatement":
       return handleBlockStatement(node);
     case "BinaryExpression":
       return evaluateBinaryExpression(node);
+    case "AssignmentExpression":
+      return handleAssignment(node);
     case "NumberLiteral":
     case "StringLiteral":
     case "Identifier":
@@ -83,6 +87,28 @@ function handleIfStatement(node) {
   } else if (node.elseBranch) {
     return evaluateNode(node.elseBranch);
   }
+}
+
+// ------------------------------
+// 🔁 While Statement
+// ------------------------------
+function handleWhileStatement(node) {
+  let result;
+  while (evaluateExpression(node.condition)) {
+    result = evaluateNode(node.body);
+    // Optional: Add break logic if supporting it later
+  }
+  return result;
+}
+
+function handleAssignment(node) {
+  if (!(node.name in env)) {
+    throw new Error(`Cannot assign to undeclared variable: ${node.name}`);
+  }
+
+  const newValue = evaluateExpression(node.value);
+  env[node.name] = newValue;
+  return newValue;
 }
 
 // ------------------------------
