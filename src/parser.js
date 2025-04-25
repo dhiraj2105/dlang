@@ -85,6 +85,20 @@ function parseStatement() {
     return parseIfStatement();
   }
 
+  // Check if the token is a "while" keyword for while loop
+  if (match("KEYWORD", "while")) {
+    return parseWhileStatement();
+  }
+
+  // Assignment like: x = x + 1
+  if (
+    match("IDENTIFIER") &&
+    tokens[current + 1]?.type === "OPERATOR" &&
+    tokens[current + 1]?.value === "="
+  ) {
+    return parseAssignment();
+  }
+
   // If the token doesn't match "let" or "print", throw an error
   throw new Error("Unknown statement: " + token.value);
 }
@@ -240,6 +254,40 @@ function parseIfStatement() {
     condition,
     thenBranch,
     elseBranch,
+  };
+}
+
+// ------------------------------
+// 🔁 Parses while loop
+// Example:
+// while x < 10 {
+//   print x
+// }
+// ------------------------------
+function parseWhileStatement() {
+  next(); // Skip the 'while' keyword
+
+  const condition = parseExpression(); // Parse the condition (e.g., x < 10)
+  const body = parseBlock(); // Parse the loop body inside { }
+
+  return {
+    type: "WhileStatement",
+    condition,
+    body,
+  };
+}
+
+function parseAssignment() {
+  const name = peek().value;
+  next(); // consume identifier
+
+  next(); // consume '='
+  const value = parseExpression();
+
+  return {
+    type: "AssignmentExpression",
+    name,
+    value,
   };
 }
 
