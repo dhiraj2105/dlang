@@ -37,6 +37,10 @@ function evaluateNode(node) {
       return handleVariableDeclaration(node);
     case "PrintStatement":
       return handlePrintStatement(node);
+    case "IfStatement":
+      return handleIfStatement(node);
+    case "BlockStatement":
+      return handleBlockStatement(node);
     case "BinaryExpression":
       return evaluateBinaryExpression(node);
     case "NumberLiteral":
@@ -67,6 +71,30 @@ function handlePrintStatement(node) {
   const value = evaluateExpression(node.value);
   console.log(value); // print to output
   return value;
+}
+
+// ------------------------------
+// If Statement
+// ------------------------------
+function handleIfStatement(node) {
+  const testResult = evaluateExpression(node.condition);
+  if (testResult) {
+    return evaluateNode(node.thenBranch);
+  } else if (node.elseBranch) {
+    return evaluateNode(node.elseBranch);
+  }
+}
+
+// ------------------------------
+// Block Statement
+// Executes multiple statements inside a block
+// ------------------------------
+function handleBlockStatement(node) {
+  let result;
+  for (const stmt of node.body) {
+    result = evaluateNode(stmt);
+  }
+  return result;
 }
 
 // ------------------------------
