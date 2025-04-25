@@ -1,0 +1,6 @@
+let num = 0
+
+while num < 5 {
+    print "Hello from while"
+    num = num + 1
+}
