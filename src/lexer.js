@@ -11,7 +11,7 @@
 // ==========================
 
 // List of reserved keywords in dlang
-const KEYWORDS = ["let", "print", "if", "else", "while"];
+const KEYWORDS = ["let", "print", "if", "else", "while", "break", "continue"];
 
 // Define token types using regular expressions
 const TOKEN_TYPES = [
