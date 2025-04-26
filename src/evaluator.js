@@ -17,6 +17,10 @@
 // ------------------------------
 const env = {};
 
+// Control flow signals for break and continue
+class BreakSignal {}
+class ContinueSignal {}
+
 // ------------------------------
 // Main Evaluate function
 // Accepts the full AST and runs each node
@@ -47,6 +51,10 @@ function evaluateNode(node) {
       return evaluateBinaryExpression(node);
     case "AssignmentExpression":
       return handleAssignment(node);
+    case "ContinueStatement": // Handling ContinueStatement
+      return handleContinueStatement(); // Trigger continue logic
+    case "BreakStatement": // Handling BreakStatement
+      return handleBreakStatement(); // Trigger break logic
     case "NumberLiteral":
     case "StringLiteral":
     case "Identifier":
@@ -95,10 +103,31 @@ function handleIfStatement(node) {
 function handleWhileStatement(node) {
   let result;
   while (evaluateExpression(node.condition)) {
-    result = evaluateNode(node.body);
-    // Optional: Add break logic if supporting it later
+    try {
+      result = evaluateNode(node.body);
+    } catch (e) {
+      if (e instanceof BreakSignal) break;
+      if (e instanceof ContinueSignal) continue;
+      throw e; // rethrow other unexpected errors
+    }
   }
   return result;
+}
+
+// ------------------------------
+// Handle Continue Signal
+// This will signal the loop to continue to the next iteration
+// ------------------------------
+function handleContinueStatement() {
+  throw new ContinueSignal(); // Trigger a ContinueSignal to skip the current loop iteration
+}
+
+// ------------------------------
+// Handle Break Signal
+// This will signal the loop to break and exit
+// ------------------------------
+function handleBreakStatement() {
+  throw new BreakSignal(); // Trigger a BreakSignal to exit the loop
 }
 
 function handleAssignment(node) {
@@ -146,6 +175,10 @@ function evaluateBinaryExpression(node) {
       return left < right;
     case ">":
       return left > right;
+    case "==": // ✅ ADDED
+      return left === right;
+    case "!=": // ✅ ADDED
+      return left !== right;
     default:
       throw new Error("Unsupported operator: " + node.operator);
   }
