@@ -90,6 +90,15 @@ function parseStatement() {
     return parseWhileStatement();
   }
 
+  if (match("KEYWORD", "continue")) {
+    return parseContinueStatement(); // Parse continue statement
+  }
+
+  // Check if the token is a "break" keyword
+  if (match("KEYWORD", "break")) {
+    return parseBreakStatement(); // Parse break statement
+  }
+
   // Assignment like: x = x + 1
   if (
     match("IDENTIFIER") &&
@@ -274,6 +283,26 @@ function parseWhileStatement() {
     type: "WhileStatement",
     condition,
     body,
+  };
+}
+
+// ------------------------------
+// 🧩 Parse continue statement
+// ------------------------------
+function parseContinueStatement() {
+  next(); // Skip the 'continue' keyword
+  return {
+    type: "ContinueStatement", // Define the AST node type for continue
+  };
+}
+
+// ------------------------------
+// 🧩 Parse break statement
+// ------------------------------
+function parseBreakStatement() {
+  next(); // Skip the 'break' keyword
+  return {
+    type: "BreakStatement", // Define the AST node type for break
   };
 }
 
