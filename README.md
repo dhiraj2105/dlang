@@ -4,45 +4,41 @@
 
 ---
 
-## 📦 Project Structure
-
-my-lang/
-├── src/ # Lexer, Parser, Interpreter, REPL
-│ └── utils/ # Helper functions
-├── examples/ # Code samples in dlang
-├── docs/ # Documentation & syntax guide
-├── tests/ # Tests
-├── README.md # This file
-└── package.json # Node.js project metadata
-
----
-
-## 🎯 Goal
-
-To create a basic interpreted programming language from scratch with clean structure and full documentation. Future plans include:
-
-- Variable support
-- Arithmetic operations
-- Print statements
-- REPL support
-- Control flow
-- Functions
-
----
-
 ## How to Run code
 
-```dlang
-create a .dlang file with exmaple code :
+Install dlang interpreter (You have to install it globaly)
 
-let x = 5
-let y = 10
-let name = "Dhiraj"
-print x + y
-print name
+On Linux :
 
-Run the code :
-node src/index.js example.dlang
+```bash
+sudo npm install -g @dhiraj2105/dlang
+```
+
+On Windows :
+Run powershell as adminstrator,
+
+```bash
+npm install -g @dhiraj2105/dlang
+```
+
+Create .dlang file
+
+```bash
+dlang file.dlang
+```
+
+### If Running from Git repo
+
+Clone the git repo
+
+```bash
+git clone https://github.com/your-repo/dlang.git
+```
+
+Open the folder and run
+
+```bash
+node src/index.js examples/example.dlang
 
 ```
 
@@ -53,32 +49,17 @@ let x = 10
 let y = 5
 print x + y
 # This is a comment
-
-
-
+```
 
 🛠️ Technologies
 Node.js
-
 JavaScript
-
 No third-party compiler libraries (built from scratch)
 
-📈 Roadmap
- Project structure
+## ✨ Contribute and Star the Repo
 
- Lexer (Tokenizer)
+If you like dlang, feel free to:
 
- Parser (AST Generator)
+Contribute by creating issues or submitting pull requests.
 
- Interpreter (Executor)
-
- REPL (Command-line execution)
-
- Variable system
-
- Conditionals
-
- Functions
-
-```
+Star the repository to show your support and help others find it!
