@@ -1,5 +1,5 @@
 {
-  "name": "dlang",
+  "name": "@dhiraj2105/dlang",
   "version": "1.0.0",
   "main": "index.js",
   "bin": {
@@ -7,6 +7,10 @@
   },
   "scripts": {
     "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dhiraj2105/dlang.git"
   },
   "keywords": [
     "dlang",

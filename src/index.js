@@ -35,14 +35,14 @@ function runDlangCode(code) {
   try {
     // Step 1: Lexing – Convert code to tokens
     const tokens = tokenize(code);
-    console.log("\n📦 Tokens:", tokens);
+    // console.log("\n📦 Tokens:", tokens);
 
     // Step 2: Parsing – Convert tokens to AST
     const ast = parse(tokens);
-    console.log("\n🌲 AST:", JSON.stringify(ast, null, 2));
+    // console.log("\n🌲 AST:", JSON.stringify(ast, null, 2));
 
     // Step 3: Evaluation – Run the AST
-    console.log("\n⚙️ Output:");
+    // console.log("\n⚙️ Output:");
     evaluate(ast);
   } catch (error) {
     console.error("💥 Runtime Error:", error.message);
