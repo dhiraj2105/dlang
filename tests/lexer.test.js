@@ -54,6 +54,46 @@ const testCases = [
       { type: "PUNCTUATION", value: "}" },
     ],
   },
+  // Test case for `break` keyword (no semicolon after break)
+  {
+    input: "break",
+    expected: [{ type: "KEYWORD", value: "break" }],
+  },
+  // Test case for `continue` keyword (no semicolon after continue)
+  {
+    input: "continue",
+    expected: [{ type: "KEYWORD", value: "continue" }],
+  },
+  // Test case for `break` in a loop (no semicolon after break)
+  {
+    input: "while (x < 10) { break }",
+    expected: [
+      { type: "KEYWORD", value: "while" },
+      { type: "PUNCTUATION", value: "(" },
+      { type: "IDENTIFIER", value: "x" },
+      { type: "OPERATOR", value: "<" },
+      { type: "NUMBER", value: "10" },
+      { type: "PUNCTUATION", value: ")" },
+      { type: "PUNCTUATION", value: "{" },
+      { type: "KEYWORD", value: "break" },
+      { type: "PUNCTUATION", value: "}" },
+    ],
+  },
+  // Test case for `continue` in a loop (no semicolon after continue)
+  {
+    input: "while (x < 10) { continue }",
+    expected: [
+      { type: "KEYWORD", value: "while" },
+      { type: "PUNCTUATION", value: "(" },
+      { type: "IDENTIFIER", value: "x" },
+      { type: "OPERATOR", value: "<" },
+      { type: "NUMBER", value: "10" },
+      { type: "PUNCTUATION", value: ")" },
+      { type: "PUNCTUATION", value: "{" },
+      { type: "KEYWORD", value: "continue" },
+      { type: "PUNCTUATION", value: "}" },
+    ],
+  },
 ];
 
 function runLexerTests() {
