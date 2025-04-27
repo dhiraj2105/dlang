@@ -87,6 +87,19 @@ while i < 5
     print i
     i = i + 1
 
+Break and Continue
+let num = 0
+while num < 10 {
+    print num
+    if num == 5 {
+        continue
+    }
+    if num == 8 {
+        break
+    }
+    num = num + 1
+}
+
 ```
 
 🧑‍💻 Final Notes
