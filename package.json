@@ -1,9 +1,9 @@
 {
   "name": "@dhiraj2105/dlang",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "index.js",
   "bin": {
-    "dlang": "./src/index.js"
+    "dlang": "src/index.js"
   },
   "scripts": {
     "start": "node index.js"
