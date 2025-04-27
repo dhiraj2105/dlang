@@ -94,6 +94,71 @@ const testCases = [
         ],
       },
     ],
+  }, // Test case for break statement (without semicolon)
+  {
+    input: "break",
+    expected: [
+      {
+        type: "BreakStatement",
+      },
+    ],
+  },
+  // Test case for continue statement (without semicolon)
+  {
+    input: "continue",
+    expected: [
+      {
+        type: "ContinueStatement",
+      },
+    ],
+  },
+  // Test case for break inside a while loop
+  {
+    input: "while x < 10 { break }",
+    expected: [
+      {
+        type: "WhileStatement",
+        condition: {
+          type: "BinaryExpression",
+          operator: "<",
+          left: {
+            type: "Identifier",
+            name: "x",
+          },
+          right: {
+            type: "NumberLiteral",
+            value: 10,
+          },
+        },
+        body: {
+          type: "BreakStatement",
+        },
+      },
+    ],
+  },
+  // Test case for continue inside a while loop
+  {
+    input: "while x < 10 { continue }",
+    expected: [
+      {
+        type: "WhileStatement",
+        condition: {
+          type: "BinaryExpression",
+          operator: "<",
+          left: {
+            type: "Identifier",
+            name: "x",
+          },
+          right: {
+            type: "NumberLiteral",
+            value: 10,
+          },
+        },
+        body: {
+          type: "ContinueStatement",
+        },
+      },
+    ],
   },
 ];
 
