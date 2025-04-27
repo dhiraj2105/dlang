@@ -2,6 +2,9 @@
   "name": "dlang",
   "version": "1.0.0",
   "main": "index.js",
+  "bin": {
+    "dlang": "./src/index.js"
+  },
   "scripts": {
     "start": "node index.js"
   },
