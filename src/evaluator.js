@@ -17,9 +17,18 @@
 // ------------------------------
 const env = {};
 
+// store functions definations
+const functions = {};
+
 // Control flow signals for break and continue
 class BreakSignal {}
 class ContinueSignal {}
+// return signal
+class ReturnSignal {
+  constructor(value) {
+    this.value = value;
+  }
+}
 
 // ------------------------------
 // Main Evaluate function
@@ -59,6 +68,16 @@ function evaluateNode(node) {
     case "StringLiteral":
     case "Identifier":
       return evaluateExpression(node);
+
+    case "FunctionDeclaration":
+      return handleFunctionDeclaration(node);
+    case "ReturnStatement":
+      return handleReturnStatement(node);
+    case "ExpressionStatement":
+      return evaluateExpression(node.expression);
+    case "CallExpression":
+      return handleCallExpression(node);
+
     default:
       throw new Error("Unknown AST Node Type: " + node.type);
   }
@@ -203,9 +222,55 @@ function evaluateExpression(expr) {
       }
     case "BinaryExpression":
       return evaluateBinaryExpression(expr); // recurse for nested expression
+    case "CallExpression":
+      return handleCallExpression(expr);
     default:
       throw new Error("Unknown expression type: " + expr.type);
   }
+}
+
+function handleFunctionDeclaration(node) {
+  const { name, params, body } = node;
+  functions[name] = { params, body };
+}
+
+function handleCallExpression(node) {
+  const func = functions[node.name];
+  if (!func) {
+    throw new Error(`Undefined function: ${node.name}`);
+  }
+
+  const { params, body } = func;
+  const args = node.arguments.map(evaluateExpression);
+
+  // Create a local environment for the function
+  const oldEnv = { ...env };
+
+  // Assign arguments to parameters
+  for (let i = 0; i < params.length; i++) {
+    env[params[i]] = args[i];
+  }
+
+  try {
+    const result = evaluateNode(body); // Evaluate function body
+    return result; // If function ends without return, return undefined
+  } catch (e) {
+    if (e instanceof ReturnSignal) {
+      return e.value; // if a return is encountered, return its value
+    }
+    throw e; // rethrow unexpected errors
+  } finally {
+    // Restore previous environment after function call
+    for (const key of Object.keys(env)) {
+      delete env[key];
+    }
+    Object.assign(env, oldEnv);
+  }
+}
+
+function handleReturnStatement(node) {
+  const value = evaluateExpression(node.value);
+  throw new ReturnSignal(value); // Immediately return the value
 }
 
 export default evaluate;
