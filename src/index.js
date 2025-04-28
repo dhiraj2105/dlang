@@ -15,6 +15,19 @@ import path from "path";
 import { tokenize } from "./lexer.js";
 import parse from "./parser.js";
 import evaluate from "./evaluator.js";
+import chalk from "chalk";
+
+// Version
+const VERSION = "1.2.1";
+// Help content | about
+const HELP_TEXT = `
+Dlang is an interpreted toy language by Dhiraj.
+
+Usage:
+  dlang <file.dlang>          Run a Dlang program from specified file
+  dlang --help                Display the help section
+  dlang --version             Display the version of dlang interpreter
+`;
 
 // -----------------------
 // 1. Read input code
@@ -52,15 +65,29 @@ function runDlangCode(code) {
 // ------------------------
 // 3. Entry point
 // accepts a filename from cli args
-// example : node src/index.js file.dlang
 // -----------------------
 
 function main() {
   const fileArg = process.argv[2];
+
+  // if no argument passed
   if (!fileArg) {
-    console.error("📂 Usage: node src/index.js <filename.dlang>");
+    console.error("📂 Usage: dlang <filename.dlang> or dlang --help");
     process.exit(1);
   }
+
+  // version and help
+  if (fileArg.includes("--version")) {
+    console.log(chalk.green(`Dlang ${VERSION}`));
+    process.exit(0);
+  }
+  if (fileArg.includes("--help")) {
+    console.log(HELP_TEXT);
+    process.exit(0);
+  }
+
+  //
+  // Driver
 
   const code = readSource(fileArg);
 
