@@ -94,6 +94,28 @@ const testCases = [
       { type: "PUNCTUATION", value: "}" },
     ],
   },
+  {
+    input: 'function greet() { print "hi" }',
+    expected: [
+      { type: "KEYWORD", value: "function" },
+      { type: "IDENTIFIER", value: "greet" },
+      { type: "PUNCTUATION", value: "(" },
+      { type: "PUNCTUATION", value: ")" },
+      { type: "PUNCTUATION", value: "{" },
+      { type: "KEYWORD", value: "print" },
+      { type: "STRING", value: '"hi"' },
+      { type: "PUNCTUATION", value: "}" },
+    ],
+  },
+  {
+    input: "dede 5 + 10",
+    expected: [
+      { type: "KEYWORD", value: "dede" },
+      { type: "NUMBER", value: "5" },
+      { type: "OPERATOR", value: "+" },
+      { type: "NUMBER", value: "10" },
+    ],
+  },
 ];
 
 function runLexerTests() {

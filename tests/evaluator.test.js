@@ -7,9 +7,7 @@ import chalk from "chalk";
 import parse from "../src/parser.js";
 import evaluate from "../src/evaluator.js";
 import { tokenize } from "../src/lexer.js";
-// import { env } from "../src/evaluator.js"; // Import the global env
 
-let env = [];
 // 🧪 Test cases
 const testCases = [
   {
@@ -36,6 +34,39 @@ const testCases = [
     expectedEnv: { a: 14 },
     expectedOutput: ["14"],
   },
+
+  // Test case: function with no params and no return
+  {
+    description: "function without return or params",
+    input: 'function greet() { print "Hello World" } greet()',
+    expectedEnv: {},
+    expectedOutput: ["Hello World"],
+  },
+
+  // Test case: function with parameters and return using `dede`
+  {
+    description: "function with params and return using `dede`",
+    input: "function sum(a, b) { dede a + b } let res = sum(5, 10) print res",
+    expectedEnv: { res: 15 },
+    expectedOutput: ["15"],
+  },
+
+  // Test case: calling function with literals
+  {
+    description: "calling function with literals",
+    input: "print sum(5, 10)",
+    expectedEnv: {},
+    expectedOutput: ["15"],
+  },
+
+  // Test case: function with variables and return using `dede`
+  {
+    description: "calling function with variables",
+    input:
+      "let num1 = 5\nlet num2 = 10\nlet result = sum(num1, num2)\nprint result",
+    expectedEnv: { num1: 5, num2: 10, result: 15 },
+    expectedOutput: ["15"],
+  },
 ];
 
 // 🔁 Patch console.log to capture output
@@ -52,12 +83,12 @@ function runEvaluatorTests() {
 
     // Reset environment and output
     capturedOutput = [];
-    for (const key in env) delete env[key];
+    const env = {}; // Reset environment for each test case
 
     try {
       const tokens = tokenize(input);
       const ast = parse(tokens);
-      evaluate(ast);
+      evaluate(ast); // Execute the evaluation of the AST
 
       // Compare console output
       const outputOK =

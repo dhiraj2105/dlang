@@ -160,6 +160,92 @@ const testCases = [
       },
     ],
   },
+  // Test case: function with no parameters, returns nothing
+  {
+    input: 'function greet() { print "Hello World" }',
+    expected: [
+      {
+        type: "FunctionDeclaration",
+        name: "greet",
+        params: [],
+        body: {
+          type: "BlockStatement",
+          body: [
+            {
+              type: "PrintStatement",
+              value: {
+                type: "StringLiteral",
+                value: "Hello World",
+              },
+            },
+          ],
+        },
+      },
+    ],
+  },
+
+  // Test case: function with params and return using `dede`
+  {
+    input: "function sum(a,b) { dede a + b }",
+    expected: [
+      {
+        type: "FunctionDeclaration",
+        name: "sum",
+        params: ["a", "b"],
+        body: {
+          type: "BlockStatement",
+          body: [
+            {
+              type: "ReturnStatement",
+              value: {
+                type: "BinaryExpression",
+                operator: "+",
+                left: { type: "Identifier", name: "a" },
+                right: { type: "Identifier", name: "b" },
+              },
+            },
+          ],
+        },
+      },
+    ],
+  },
+
+  // Test case: calling a function with variables
+  {
+    input: "let res = sum(x, y)",
+    expected: [
+      {
+        type: "VariableDeclaration",
+        name: "res",
+        value: {
+          type: "FunctionCall",
+          name: "sum",
+          args: [
+            { type: "Identifier", name: "x" },
+            { type: "Identifier", name: "y" },
+          ],
+        },
+      },
+    ],
+  },
+
+  // Test case: calling a function with literals
+  {
+    input: "print sum(5, 10)",
+    expected: [
+      {
+        type: "PrintStatement",
+        value: {
+          type: "FunctionCall",
+          name: "sum",
+          args: [
+            { type: "NumberLiteral", value: 5 },
+            { type: "NumberLiteral", value: 10 },
+          ],
+        },
+      },
+    ],
+  },
 ];
 
 function runParserTests() {
