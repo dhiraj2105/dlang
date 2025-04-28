@@ -15,7 +15,7 @@ async function runTests() {
         await import("./parser.test.js");
         break;
       case "evaluator":
-        console.log(chalk.blueBright("Running parser tests..."));
+        console.log(chalk.blueBright("Running evaluator tests..."));
         await import("./evaluator.test.js");
         break;
       default:
