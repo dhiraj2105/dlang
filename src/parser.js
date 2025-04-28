@@ -99,6 +99,14 @@ function parseStatement() {
     return parseBreakStatement(); // Parse break statement
   }
 
+  if (match("KEYWORD", "function")) {
+    return parseFunctionDeclaration();
+  }
+
+  if (match("KEYWORD", "dede")) {
+    return parseReturnStatement();
+  }
+
   // Assignment like: x = x + 1
   if (
     match("IDENTIFIER") &&
@@ -107,6 +115,10 @@ function parseStatement() {
   ) {
     return parseAssignment();
   }
+
+  // parse function call or expression as a statement
+  const expr = parseExpression();
+  return { type: "ExpressionStatement", expression: expr };
 
   // If the token doesn't match "let" or "print", throw an error
   throw new Error("Unknown statement: " + token.value);
@@ -199,10 +211,36 @@ function parsePrimary() {
     return { type: "StringLiteral", value: token.value.slice(1, -1) }; // Remove the quotes and return the string literal
   }
 
-  // If the token is an identifier, return an Identifier node with the identifier name
+  // // If the token is an identifier, return an Identifier node with the identifier name
   if (token.type === "IDENTIFIER") {
-    next(); // Skip the identifier token
-    return { type: "Identifier", name: token.value }; // Return the identifier node
+    const name = token.value;
+    next();
+
+    // 🔧 NEW: Check if it's a function call
+    if (match("PUNCTUATION", "(")) {
+      next(); // skip '('
+      const args = [];
+
+      while (!match("PUNCTUATION", ")")) {
+        const arg = parseExpression();
+        args.push(arg);
+
+        if (match("PUNCTUATION", ",")) {
+          next();
+        } else if (!match("PUNCTUATION", ")")) {
+          throw new Error("Expected ',' or ')' in function call arguments");
+        }
+      }
+      next(); // skip ')'
+
+      return {
+        type: "CallExpression",
+        name,
+        arguments: args,
+      };
+    }
+
+    return { type: "Identifier", name };
   }
 
   // If the token doesn't match any of the expected types (number, string, identifier), throw an error
@@ -316,6 +354,62 @@ function parseAssignment() {
   return {
     type: "AssignmentExpression",
     name,
+    value,
+  };
+}
+
+function parseFunctionDeclaration() {
+  next(); // Skip 'function'
+
+  const nameToken = peek();
+  if (nameToken.type !== "IDENTIFIER") {
+    throw new Error("Expected function name after 'function'");
+  }
+
+  const name = nameToken.value;
+  next(); // consume name
+
+  if (!match("PUNCTUATION", "(")) {
+    throw new Error("Expected '(' after function name");
+  }
+  next(); // consume '('
+
+  const params = [];
+
+  // Parse parameters
+  while (!match("PUNCTUATION", ")")) {
+    const paramToken = peek();
+    if (paramToken.type !== "IDENTIFIER") {
+      throw new Error("Expected parameter name");
+    }
+    params.push(paramToken.value);
+    next(); // consume parameter
+
+    if (match("PUNCTUATION", ",")) {
+      next(); // skip comma
+    } else if (!match("PUNCTUATION", ")")) {
+      throw new Error("Expected ',' or ')' after parameter");
+    }
+  }
+  next(); // consume ')'
+
+  const body = parseBlock(); // function body
+
+  return {
+    type: "FunctionDeclaration",
+    name,
+    params,
+    body,
+  };
+}
+
+function parseReturnStatement() {
+  next(); // Skip 'return'
+
+  const value = parseExpression(); // what we are returning
+
+  return {
+    type: "ReturnStatement",
     value,
   };
 }
