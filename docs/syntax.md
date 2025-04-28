@@ -100,6 +100,32 @@ while num < 10 {
     num = num + 1
 }
 
+
+```
+
+Functions :
+
+```dlang
+# Function without params , args, return
+function greet() {
+  print "Hello World"
+}
+
+greet()
+
+
+# Function with arguments and params and return
+function sum(a,b){
+  dede a + b # 'dede' is the keyword used instead of return | in Hindi dede means to give
+}
+
+let num1 = 1
+let num2 = 2
+
+let res = sum(num1, num2)
+print res
+
+print sum(5,10)
 ```
 
 🧑‍💻 Final Notes

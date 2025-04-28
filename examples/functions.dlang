@@ -1,0 +1,20 @@
+# Function without params , args, return
+function greet() {
+  print "Hello World"
+}
+
+greet()
+
+
+# Function with arguments and params and return
+function sum(a,b){
+  dede a + b
+}
+
+let num1 = 1
+let num2 = 2
+
+let res = sum(num1, num2)
+print res
+
+print sum(5,10)
