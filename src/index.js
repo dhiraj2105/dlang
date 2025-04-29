@@ -18,7 +18,7 @@ import evaluate from "./evaluator.js";
 import chalk from "chalk";
 
 // Version
-const VERSION = "1.2.1";
+const VERSION = "1.2.2";
 // Help content | about
 const HELP_TEXT = `
 Dlang is an interpreted toy language by Dhiraj.
@@ -27,6 +27,21 @@ Usage:
   dlang <file.dlang>          Run a Dlang program from specified file
   dlang --help                Display the help section
   dlang --version             Display the version of dlang interpreter
+  dlang --keywords            Display all keywords in dlang
+`;
+
+const SHOW_KEYWORDS = `
+  Keywords in dlang...
+
+  let
+  print
+  if
+  else
+  while
+  break
+  continue
+  function
+  dede      ( instead of return )
 `;
 
 // -----------------------
@@ -76,13 +91,17 @@ function main() {
     process.exit(1);
   }
 
-  // version and help
+  // version, help, keywords
   if (fileArg.includes("--version")) {
     console.log(chalk.green(`Dlang ${VERSION}`));
     process.exit(0);
   }
   if (fileArg.includes("--help")) {
     console.log(HELP_TEXT);
+    process.exit(0);
+  }
+  if (fileArg.includes("--keywords")) {
+    console.log(SHOW_KEYWORDS);
     process.exit(0);
   }
 
